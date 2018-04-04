@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="styles.css">
+  <title>FoodLove</title>
+</head>
+<body>
+<header>
+  <nav>
+      <ul>
+          <li class ='logo'><a href="index.ejs"><img src="images/foodlove.png" alt="FoodLove">
+          </a></li><li><a href="inloggen.ejs">inloggen
+          </a></li><li><a href="registreren.ejs">registreren
+          </a></li>
+      </ul>
+  </nav>
+</header>
+  <main>
+    <h1>Vul uw gegevens in</h1>
+    <article>
+      <p> Vul uw gegevens in, wij vragen u om uw favoriete keuken en gerechten in te vullen om een match te kunnen vinden!</p>
+    </article>
+  <form>
+    <fieldset>
+      <label for="name">Uw naam</label>
+      <input required name="name" type="text">
+    </fieldset>
+    <fieldset>
+      <label for="intake">Geboortedatum</label>
+        <input required name="Geboortedatum" type="date">
+        <input type="submit" value="Upload">
+    </fieldset>
+    <fieldset>
+      <legend>geslacht</legend>
+      <input id='rad1' type="radio" name="gender" value="man" checked> Man
+      <input id='rad2' type="radio" name="gender" value="vrouw"> Vrouw
+    </fieldset>
+    <fieldset>
+      <legend> favoriete keuken </legend>
+      <select name="keukens">
+      <option value="volvo">Chinees</option>
+      <option value="volvo">Surinaams</option>
+      <option value="volvo">Thai</option>
+      <option value="saab">Oosters</option>
+      <option value="fiat">Europees</option>
+      <option value="audi">Amerikaans</option>
+      </select>
+    </fieldset>
+    <fieldset>
+      <legend> bent u vegatarisch of veganistisch? </legend>
+      <select name="voorkeur">
+      <option value="volvo">Geen van beide</option>
+      <option value="volvo">Vegatarisch</option>
+      <option value="saab">Veganistisch</option>
+      </select>
+    </fieldset>
+    <fieldset>
+      <legend>Uw email adres</legend>
+      <input type="email" value="registreer">
+      <legend>Wachtwoord </legend>
+      <input type="password" value="registreer">
+      <legend>Wachtwoord verifieren</legend>
+      <input type="password" value="registreer">
+   </fieldset>
+</form>
+<form action="indexingelogd.html">
+<input class="submitreg" type="submit" value="registreer">
+</main>
+
+<footer>
+</footer>
+
+</body>
+</html>
