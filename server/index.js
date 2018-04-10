@@ -4,6 +4,7 @@ var express = require('express')
 var bodyParser = require('body-parser')
 var mysql = require('mysql')
 var argon2 = require('argon2')
+var session = require('express-session')
 
 require('dotenv').config()
 
@@ -24,15 +25,20 @@ module.exports = express()
 
   .get('/', open)
   .get('/registreren', registreren)
-  .get('/index', open)
   .get('/indexingelogd', loggedIn)
   .get('/inloggen', loginForm)
   .get('/matchdetail', matchDetail)
-  .get('/lijst', lijst)
+  .get('/matches', matches)
   .get('/mijnprofiel', mijnProfiel)
 
   .post('/registreren', registreer)
   .post('/login', login)
+
+  .use(session({
+    resave: false,
+    saveUninitialized: true,
+    secret: process.env.SESSION_SECRET
+  }))
 
   .listen(8000)
 
@@ -81,7 +87,7 @@ function registreer(req, res, next)
     connection.query('INSERT INTO gebruikers SET ?',
     {
       naam: gebruikersnaam,
-      wachtwoord: hash,
+      hash: hash,
       geboortedatum: req.body.geboortedatum,
       geslacht: req.body.geslacht,
       keuken: req.body.keuken,
@@ -98,6 +104,8 @@ function registreer(req, res, next)
       }
       else {
         {
+//          console.log(session)
+          session.user = {naam: gebruikersnaam}
           res.redirect('/')
         }
       }
@@ -107,10 +115,10 @@ function registreer(req, res, next)
 
 function login(req, res, next)
 {
-  var naam = req.body.naam
+  var email = req.body.email
   var wachtwoord = req.body.wachtwoord
 
-  if (!naam || !wachtwoord) {
+  if (!email || !wachtwoord) {
     res
       .status(400)
       .send('Username or password are missing')
@@ -119,8 +127,8 @@ function login(req, res, next)
   }
 
   connection.query(
-    'SELECT * FROM gebruikers WHERE naam = ?',
-    naam,
+    'SELECT * FROM gebruikers WHERE email = ?',
+    email,
     done
   )
 
@@ -140,21 +148,20 @@ function login(req, res, next)
       }
       else
       {
-        res
-          .status(401)
-          .send('Username does not exist')
+          res.status(401)
+          .send('Gebruiker bestaat niet')
       }
 
       function onverify(match)
       {
         if (match)
         {
-          res.redirect('/')
+          session.user = {naam: user.naam};
+          matches(req, res)
         }
         else
         {
           res.status(401).send('Password incorrect')
-          console.log('jij bent dom')
         }
       }
     }
@@ -162,24 +169,36 @@ function login(req, res, next)
 
 function open(req, res)
 {
-  var result = {
-      errors: [],
-      data: undefined
+  if(!session.user)
+  {
+    res.render('index.ejs')
   }
-  res.render('index.ejs', Object.assign({}, result))
+  else
+  {
+    var naam = session.user.naam
+    connection.query('SELECT * FROM gebruikers WHERE naam != ?', naam , done)
+  }
+    console.log(session.user)
+    function done(err, data)
+    {
+      if (err)
+      {
+        next(err)
+      }
+      else
+      {
+        res.render('indexingelogd.ejs', {data: data})
+      }
+    }
 }
 
 function loginForm(req, res, next)
 {
-  connection.query('SELECT * FROM gebruikers', done)
-
-  function done(err, data){
-    if (err){
-      next(err)
-    } else {
-    res.render('login.ejs', {data: data})
-    }
+  var result = {
+      errors: [],
+      data: undefined
   }
+    res.render('login.ejs', Object.assign({}, result))
 }
 
 function registreren(req, res)
@@ -200,15 +219,17 @@ function loggedIn(req, res)
   res.render('indexingelogd.ejs', Object.assign({}, result))
 }
 
-function lijst(req, res)
+function matches(req, res)
 {
-  connection.query('SELECT * FROM gebruikers', done)
+  var naam = session.user.naam
+  console.log(session.user)
+  connection.query('SELECT * FROM gebruikers WHERE naam != ?', naam , done)
 
   function done(err, data){
     if (err){
       next(err)
     } else {
-    res.render('lijst.ejs', {data: data})
+    res.render('matches.ejs', {data: data})
     }
   }
 }

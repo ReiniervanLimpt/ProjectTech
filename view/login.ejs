@@ -11,7 +11,7 @@
   <header>
     <nav>
       <ul>
-          <li><a href="index">foodlove
+          <li><a href="/">foodlove
           </a></li><li><a href="inloggen">inloggen
           </a></li><li><a href="registreren">registreren
           </a></li>
@@ -21,14 +21,12 @@
   <main>
     <h1>Vul uw gegevens in</h1>
     <article>
-      <p>om in te loggen voert u uw naam en wachtwoord in</p>
+      <p>om in te loggen voert u uw e-mail adres en wachtwoord in</p>
     </article>
   <form action=/login method=post>
     <fieldset>
-    <label>
-      Username
-      <input name=naam>
-    </label>
+      <label for="email">Uw e-mail adres</label>
+      <input name="email" required type="email" placeholder="naam@domein.com">
     </fieldset>
     <fieldset>
     <label>

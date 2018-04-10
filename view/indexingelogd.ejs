@@ -11,9 +11,9 @@
   <header>
     <nav>
       <ul>
-          <li><a href="index">foodlove
-          </a></li><li><a href="inloggen">inloggen
-          </a></li><li><a href="registreren">registreren
+          <li><a href="/">foodlove
+          </a></li><li><a href="matches">matches
+          </a></li><li><a href="mijn account">account
           </a></li>
       </ul>
     </nav>
@@ -22,22 +22,21 @@
 <main>
   <h1> Zoek een match </h1>
     <article>
-      <p> Op zoek naar iemand die jouw liefde voor lekker eten deelt? registreer nu en vind iemand om samen een leuke avond samen te eten, want echte liefde gaat door de maag!</p>
+      <p>Neem contact op met een andere foodie en ga samen op culinaire tocht!</p>
     </article>
-  <section>
-    <div class='match'>
-      <h1>Beatrix</h1>
-      <div class='imgWrapper'>
-        <img src="images/beatrixportret.jpg" alt="beatrix">
+    <article class='resultaten'>
+      <% data.forEach(function (entity) { %>
+      <div class='match'>
+        <h1><%= entity.naam %></h1>
+        <ul class='eigenschappen'>
+          <li><%= entity.keuken %></li>
+          <li><%= entity.voorkeur %></li>
+          <li><%= entity.locatie %></li>
+        </ul>
+        <a class="contact">Neem contact op</a>
       </div>
-      <ul class='eigenschappen'>
-        <li>Vegatarisch</li>
-        <li>Chinees</li>
-        <li>35 jaar oud</li>
-      </ul>
-      <a>Ik houd van chinees eten en ben vegatarisch, heb jij zin om bij mij een avondje te komen eten? mijn specialiteit is bakkabana.</a>
-      <a class="contact">Neem contact op</a>
-    </div>
+      <% }) %>
+    </article>
 </main>
 
 <footer>
