@@ -11,11 +11,15 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "argon2": "^0.17.3",
     "body-parser": "^1.18.2",
+    "dotenv": "^5.0.1",
     "ejs": "^2.5.8",
     "express": "^4.16.3",
     "mysql": "^2.15.0",
+    "node-gyp": "^3.6.2",
     "package": "^1.0.1",
+    "python": "0.0.4",
     "slug": "^0.9.1"
   }
 }

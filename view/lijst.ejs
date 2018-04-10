@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="styles.css">
+  <title>FoodLove</title>
+</head>
+<body>
+  <header>
+    <nav>
+      <ul>
+          <li><a href="index">foodlove
+          </a></li><li><a href="inloggen">inloggen
+          </a></li><li><a href="registreren">registreren
+          </a></li>
+      </ul>
+    </nav>
+  </header>
+<main>
+  <h1> Zoek een match </h1>
+  <article class='resultaten'>
+    <% data.forEach(function (entity) { %>
+    <div class='match'>
+      <h1><%= entity.naam %></h1>
+      <ul class='eigenschappen'>
+        <li><%= entity.keuken %></li>
+        <li><%= entity.voorkeur %></li>
+        <li><%= entity.locatie %></li>
+      </ul>
+      <a class="contact">Neem contact op</a>
+    </div>
+    <% }) %>
+  </article>
+</main>
+</body>
+</html>

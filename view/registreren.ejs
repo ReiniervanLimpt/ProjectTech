@@ -8,66 +8,72 @@
   <title>FoodLove</title>
 </head>
 <body>
-<header>
-  <nav>
+  <header>
+    <nav>
       <ul>
-          <li class ='logo'><a href="index.ejs"><img src="images/foodlove.png" alt="FoodLove">
-          </a></li><li><a href="inloggen.ejs">inloggen
-          </a></li><li><a href="registreren.ejs">registreren
+          <li><a href="index">foodlove
+          </a></li><li><a href="inloggen">inloggen
+          </a></li><li><a href="registreren">registreren
           </a></li>
       </ul>
-  </nav>
-</header>
+    </nav>
+  </header>
   <main>
     <h1>Vul uw gegevens in</h1>
     <article>
-      <p> Vul uw gegevens in, wij vragen u om uw favoriete keuken en gerechten in te vullen om een match te kunnen vinden!</p>
+      <p> Vul uw gegevens in, wij vragen u om uw favoriete keuken en wat andere gegevens in te vullen om een match te kunnen vinden!</p>
     </article>
-  <form>
+  <form method="post" action="/registreren">
     <fieldset>
-      <label for="name">Uw naam</label>
-      <input required name="name" type="text">
+      <label for="naam">Uw naam</label>
+      <input required name="naam" type="text">
     </fieldset>
     <fieldset>
-      <label for="intake">Geboortedatum</label>
-        <input required name="Geboortedatum" type="date">
-        <input type="submit" value="Upload">
+      <label for="geboortedatum">Geboortedatum</label>
+      <input required name="geboortedatum" type="date">
     </fieldset>
     <fieldset>
-      <legend>geslacht</legend>
-      <input id='rad1' type="radio" name="gender" value="man" checked> Man
-      <input id='rad2' type="radio" name="gender" value="vrouw"> Vrouw
+      <legend>Geslacht</legend>
+        <label>Vrouw</label>
+        <input type="radio" name="geslacht" value="vrouw" required>
+        <label>man</label>
+        <input type="radio" name="geslacht" value="man" required>
     </fieldset>
     <fieldset>
-      <legend> favoriete keuken </legend>
-      <select name="keukens">
-      <option value="volvo">Chinees</option>
-      <option value="volvo">Surinaams</option>
-      <option value="volvo">Thai</option>
-      <option value="saab">Oosters</option>
-      <option value="fiat">Europees</option>
-      <option value="audi">Amerikaans</option>
+      <label for="keuken">Favoriete keuken</label>
+      <select name="keuken" required>
+        <option value="Chinees">Chinees</option>
+        <option value="Surinaams">Surinaams</option>
+        <option value="Thais">Thais</option>
+        <option value="Oosters">Oosters</option>
+        <option value="Frans">Frans</option>
+        <option value="Hollands">Hollands</option>
+        <option value="Amerikaans">Amerikaans</option>
+      </select>
+        <label for="voorkeur">bent u vegatarisch of veganistisch?</label>
+        <select name="voorkeur" required>
+        <option value="niet">Geen van beide</option>
+        <option value="vega">Vegatarisch</option>
+        <option value="vegan">Veganistisch</option>
+      </select>
+      <label for="locatie">waar eet je graag</label>
+        <select name="locatie" required>
+        <option value="geenvoorkeur">Geen voorkeur</option>
+        <option value="restaurant">Een restaurant</option>
+        <option value="thuis">Thuis</option>
+        <option value="iemandanders">Bij iemand anders</option>
       </select>
     </fieldset>
     <fieldset>
-      <legend> bent u vegatarisch of veganistisch? </legend>
-      <select name="voorkeur">
-      <option value="volvo">Geen van beide</option>
-      <option value="volvo">Vegatarisch</option>
-      <option value="saab">Veganistisch</option>
-      </select>
-    </fieldset>
-    <fieldset>
-      <legend>Uw email adres</legend>
-      <input type="email" value="registreer">
-      <legend>Wachtwoord </legend>
-      <input type="password" value="registreer">
-      <legend>Wachtwoord verifieren</legend>
-      <input type="password" value="registreer">
+      <label for="email">Uw e-mail adres</label>
+      <input name="email" required type="email" placeholder="naam@domein.com">
+      <label for="wachtwoord">wachtwoord met tekens, hoofdletters en cijfers</label>
+      <input name="wachtwoord" required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}" type="password" placeholder="wachtwoord">
+      <label for="wachtwoordverif">wachtwoord verifïeren:</label>
+      <input name="wachtwoordverif" required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}" type="password" placeholder="wachtwoord">
    </fieldset>
+   <input class="submitreg" type="submit" value="registreer">
 </form>
-<form action="indexingelogd.html">
-<input class="submitreg" type="submit" value="registreer">
 </main>
 
 <footer>
