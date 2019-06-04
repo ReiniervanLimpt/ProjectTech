@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,35 +8,67 @@
   <link rel="stylesheet" href="styles.css">
   <title>FoodLove</title>
 </head>
+
 <body>
   <header>
     <nav>
       <ul>
-          <li><a href="/">foodlove
-          </a></li><li><a href="inloggen">inloggen
-          </a></li><li><a href="registreren">registreren
+        <li><a href="/">foodlove
+          </a></li>
+        <li><a href="matches">matches
+          </a></li>
+        <li><a href="mijnaccount">account
           </a></li>
       </ul>
     </nav>
   </header>
-<main>
-  <h1> Zoek een match </h1>
-  <article>
-    <p>Neem contact op met een andere foodie en ga samen op culinaire tocht!</p>
-  </article>
+  <main>
+    <h1> Zoek een match </h1>
+    <article>
+      <form action=/filter method=post>
+        <fieldset>
+          <label for="email">Van welke keuken wilt u genieten?</label>
+          <select name="keuken" required>
+          <option value="Alle keukens">Alle keukens</option>
+          <option value="Chinees">Chinees</option>
+          <option value="Surinaams">Surinaams</option>
+          <option value="Thais">Thais</option>
+          <option value="Oosters">Oosters</option>
+          <option value="Frans">Frans</option>
+          <option value="Hollands">Hollands</option>
+          <option value="Amerikaans">Amerikaans</option>
+          <option value="Italiaans">Italiaans</option>
+        </select>
+          <input class="submitreg" type="submit" value="toepassen">
+      </form>
+    </article>
     <% data.forEach(function (entity) { %>
-  <article class='resultaten'>
-    <div class='match'>
-      <h1><%= entity.naam %></h1>
-      <ul class='eigenschappen'>
-        <li><%= entity.keuken %></li>
-        <li><%= entity.voorkeur %></li>
-        <li><%= entity.locatie %></li>
-      </ul>
-      <a class="contact">Neem contact op</a>
-    </div>
-  </article>
-  <% }) %>
-</main>
+      <div class="flexcontainer">
+        <article class='resultaten'>
+          <h1><%= entity.naam %></h1>
+          <ul class='eigenschappen'>
+            <li>Favoriete keuken:</li>
+            <li>Vega of Vegan:</li>
+            <li>Eet graag:</li>
+          </ul>
+          <ul class='eigenschappenmatch'>
+            <li>
+              <%= entity.keuker %>
+            </li>
+            <li>
+              <%= entity.voorkeur %>
+            </li>
+            <li>
+              <%= entity.locatie %>
+            </li>
+          </ul>
+          <div class="informatiematch">
+          </div>
+        </article>
+      </div>
+      <% }) %>
+  </main>
+  <script src=/index.js></script>
 </body>
+
 </html>

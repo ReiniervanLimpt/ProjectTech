@@ -13,7 +13,7 @@
       <ul>
           <li><a href="/">foodlove
           </a></li><li><a href="matches">matches
-          </a></li><li><a href="mijn account">account
+          </a></li><li><a href="mijnaccount">account
           </a></li>
       </ul>
     </nav>
@@ -22,20 +22,7 @@
 <main>
   <h1> Zoek een match </h1>
     <article>
-      <p>Neem contact op met een andere foodie en ga samen op culinaire tocht!</p>
-    </article>
-    <article class='resultaten'>
-      <% data.forEach(function (entity) { %>
-      <div class='match'>
-        <h1><%= entity.naam %></h1>
-        <ul class='eigenschappen'>
-          <li><%= entity.keuken %></li>
-          <li><%= entity.voorkeur %></li>
-          <li><%= entity.locatie %></li>
-        </ul>
-        <a class="contact">Neem contact op</a>
-      </div>
-      <% }) %>
+      <p>Neem contact op met een andere foodie onder "matches" en ga samen op culinaire tocht!</p>
     </article>
 </main>
 

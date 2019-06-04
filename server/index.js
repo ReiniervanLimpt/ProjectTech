@@ -1,253 +1,213 @@
-'use strict'
+ 'use strict'
 
-var express = require('express')
-var bodyParser = require('body-parser')
-var mysql = require('mysql')
-var argon2 = require('argon2')
-var session = require('express-session')
+ var express = require('express')
+ var bodyParser = require('body-parser')
+ var mongo = require('mongodb')
+ var argon2 = require('argon2')
+ var session = require('express-session')
+ var fs = require('fs');
 
-require('dotenv').config()
+ require('dotenv').config()
 
-var connection = mysql.createConnection({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME
-})
+ var db = null
+ var url = 'mongodb://' + process.env.DB_HOST + ':' + process.env.DB_PORT
 
-connection.connect()
+ mongo.MongoClient.connect(url, {
+   useNewUrlParser: true
+ }, function(err, client) {
+   if (err) throw err
+   db = client.db(process.env.DB_NAME)
+   useNewUrlParser: true
+ })
 
-module.exports = express()
-  .set('view engine', 'ejs')
-  .set('views', 'view')
-  .use(express.static('static'))
-  .use(bodyParser.urlencoded({extended: true}))
+ module.exports = express()
+   .set('view engine', 'ejs')
+   .set('views', 'view')
+   .use(express.static('static'))
+   .use(bodyParser.urlencoded({
+     extended: true
+   }))
 
-  .get('/', open)
-  .get('/registreren', registreren)
-  .get('/indexingelogd', loggedIn)
-  .get('/inloggen', loginForm)
-  .get('/matchdetail', matchDetail)
-  .get('/matches', matches)
-  .get('/mijnprofiel', mijnProfiel)
+   .get('/', open)
+   .get('/registreren', registreren)
+   .get('/inloggen', loginForm)
+   .get('/matches', matches)
 
-  .post('/registreren', registreer)
-  .post('/login', login)
+   .post('/registreren', registreer)
+   .post('/login', login)
+   .post('/filter', filterResults)
 
-  .use(session({
-    resave: false,
-    saveUninitialized: true,
-    secret: process.env.SESSION_SECRET
-  }))
+   .use(session({
+     resave: false,
+     saveUninitialized: true,
+     secret: process.env.SESSION_SECRET
+   }))
 
-  .listen(8000)
+   .listen(8000)
 
-function registreer(req, res, next)
-{
-  var gebruikersnaam = req.body.naam
-  var wachtwoord = req.body.wachtwoord
-  var min = 5
-  var max = 160
+ function registreer(req, res, next) {
+   var gebruikersnaam = req.body.naam
+   var wachtwoord = req.body.wachtwoord
+   var min = 5
+   var max = 160
 
-  if (!gebruikersnaam || !wachtwoord)
-  {
-    res
-    .status(400)
-    .send('naam of wachtwoord ontbreekt')
-    return
-  }
+   if (!gebruikersnaam || !wachtwoord) {
+     res
+       .status(400)
+       .send('naam of wachtwoord ontbreekt')
+     return
+   }
 
-  if(wachtwoord.length < min || wachtwoord.length > max)
-  {
-    res
-    .status(400)
-    .send('Uw wachtwoord moet tussen ' + min + ' en ' + max + ' tekens zijn.')
-  }
+   if (wachtwoord.length < min || wachtwoord.length > max) {
+     res
+       .status(400)
+       .send('Uw wachtwoord moet tussen ' + min + ' en ' + max + ' tekens zijn.')
+   } else {
+     argon2.hash(wachtwoord).then(onhash, next)
+   }
 
-  connection.query('SELECT * FROM gebruikers WHERE naam = ?',
-  gebruikersnaam, done)
+   function onhash(hash) {
+     db.collection("gebruikers").insertOne({
+       naam: gebruikersnaam,
+       hash: hash,
+       geboortedatum: req.body.geboortedatum,
+       geslacht: req.body.geslacht,
+       keuker: req.body.keuken,
+       voorkeur: req.body.voorkeur,
+       locatie: req.body.locatie,
+       email: req.body.email,
+       beschrijving: req.body.beschrijving
+     }), verwerkRegistratie()
 
-  function done(err, data)
-  {
-    if (err)
-    {
-        next(err)
-    }
-    else if (data.length !== 0)
-    {
-        rest.status(409) .send('Die naam is al in gebruik')
-    }
-    else
-    {
-        argon2.hash(wachtwoord).then(onhash, next)
-    }
-  }
-  function onhash(hash)
-  {
-    connection.query('INSERT INTO gebruikers SET ?',
-    {
-      naam: gebruikersnaam,
-      hash: hash,
-      geboortedatum: req.body.geboortedatum,
-      geslacht: req.body.geslacht,
-      keuken: req.body.keuken,
-      voorkeur: req.body.voorkeur,
-      locatie: req.body.locatie,
-      email: req.body.email,
-    }, verwerkRegistratie)
+     function verwerkRegistratie(err) {
+       if (err) {
+         next(err)
+       } else {
+         db.collection('gebruikers').find().toArray(done)
 
-    function verwerkRegistratie(err)
-    {
-      if (err)
-      {
-        next(err)
-      }
-      else {
-        {
-//          console.log(session)
-          session.user = {naam: gebruikersnaam}
-          res.redirect('/')
-        }
-      }
-    }
-  }
-}
+         function done(err, data) {
+           if (err) {
+             next(err)
+           } else {
+             res.render('matches.ejs', {
+               data: data
+             })
+           }
+         }
+       }
+     }
+   }
+ }
 
-function login(req, res, next)
-{
-  var email = req.body.email
-  var wachtwoord = req.body.wachtwoord
+ function login(req, res, next) {
+   var email = req.body.email
+   var wachtwoord = req.body.wachtwoord
 
-  if (!email || !wachtwoord) {
-    res
-      .status(400)
-      .send('Username or password are missing')
+   if (!email || !wachtwoord) {
+     res
+       .status(400)
+       .send('Username or password are missing')
+     return
+   }
 
-    return
-  }
 
-  connection.query(
-    'SELECT * FROM gebruikers WHERE email = ?',
-    email,
-    done
-  )
+   db.collection('gebruikers').findOne({
+     email: email
+   }, done)
 
-  function done(err, data)
-  {
-    var user = data && data[0]
+   function done(err, data) {
 
-      if (err)
-      {
-        next(err)
-      }
-      else if (user)
-      {
-        argon2
-          .verify(user.hash, wachtwoord)
-          .then(onverify, next)
-      }
-      else
-      {
-          res.status(401)
-          .send('Gebruiker bestaat niet')
-      }
+     var user = {
+       data: data
+     }
 
-      function onverify(match)
-      {
-        if (match)
-        {
-          session.user = {naam: user.naam};
-          matches(req, res)
-        }
-        else
-        {
-          res.status(401).send('Password incorrect')
-        }
-      }
-    }
-}
+     if (err) {
+       next(err)
+     } else if (user.data) {
+       argon2
+         .verify(user.data.hash, wachtwoord)
+         .then(onverify, next)
+     } else {
+       res.status(401)
+         .send('Gebruiker bestaat niet')
+     }
 
-function open(req, res)
-{
-  if(!session.user)
-  {
-    res.render('index.ejs')
-  }
-  else
-  {
-    var naam = session.user.naam
-    connection.query('SELECT * FROM gebruikers WHERE naam != ?', naam , done)
-  }
-    console.log(session.user)
-    function done(err, data)
-    {
-      if (err)
-      {
-        next(err)
-      }
-      else
-      {
-        res.render('indexingelogd.ejs', {data: data})
-      }
-    }
-}
+     function onverify(match) {
+       if (match) {
+         session.user = {
+           naam: user.data.naam
+         };
+         open(req, res)
+       } else {
+         res.status(401).send('Password incorrect')
+       }
+     }
+   }
+ }
 
-function loginForm(req, res, next)
-{
-  var result = {
-      errors: [],
-      data: undefined
-  }
-    res.render('login.ejs', Object.assign({}, result))
-}
+ function loginForm(req, res, next) {
+   res.render('login.ejs')
+ }
 
-function registreren(req, res)
-{
-  var result = {
-      errors: [],
-      data: undefined
-  }
-  res.render('registreren.ejs', Object.assign({}, result))
-}
+ function registreren(req, res) {
+   res.render('registreren.ejs')
+ }
 
-function loggedIn(req, res)
-{
-  var result = {
-      errors: [],
-      data: undefined
-  }
-  res.render('indexingelogd.ejs', Object.assign({}, result))
-}
+ function open(req, res) {
+   if (!session.user) {
+     res.render('index.ejs')
+   } else {
+     var naam = session.user.naam
+     res.render('indexingelogd.ejs')
+   }
+ }
 
-function matches(req, res)
-{
-  var naam = session.user.naam
-  console.log(session.user)
-  connection.query('SELECT * FROM gebruikers WHERE naam != ?', naam , done)
+ function matches(req, res) {
+   if (!session.user) {
+     res.render('index.ejs')
+   } else {
+     var naam = session.user.naam
+     db.collection('gebruikers').find().toArray(done)
 
-  function done(err, data){
-    if (err){
-      next(err)
-    } else {
-    res.render('matches.ejs', {data: data})
-    }
-  }
-}
+     function done(err, data) {
+       if (err) {
+         next(err)
+       } else {
+         res.render('matches.ejs', {
+           data: data
+         })
+       }
+     }
+   }
+ }
 
-function matchDetail(req, res)
-{
-  var result = {
-      errors: [],
-      data: undefined
-  }
-  res.render('matchdetail.ejs', Object.assign({}, result))
-}
+ function filterResults(req, res) {
+   var keuken = req.body.keuken
+   if (keuken !== "Alle keukens") {
+     db.collection('gebruikers').find({
+       keuker: keuken
+     }).toArray(done)
 
-function mijnProfiel(req, res)
-{
-  var result = {
-      errors: [],
-      data: undefined
-  }
-  res.render('mmijnprofiel.ejs', Object.assign({}, result))
-}
+     function done(err, data) {
+       if (err) {
+         next(err)
+       } else {
+         res.render('matches.ejs', {
+           data: data
+         })
+       }
+     }
+   } else {
+     db.collection('gebruikers').find().toArray(done)
+
+     function done(err, data) {
+       if (err) {
+         next(err)
+       } else {
+         res.render('matches.ejs', {
+           data: data
+         })
+       }
+     }
+   }
+ }

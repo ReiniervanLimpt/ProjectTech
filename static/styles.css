@@ -1,6 +1,6 @@
 header{
   height: 50px;
-  background-color: #d4145a;
+  background-color: #444444;
   margin: -20px;
   position:fixed;
   width: 120%;
@@ -15,28 +15,30 @@ header{
 }
 body{
     font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
-    background: linear-gradient(to right, #a1055b , #f7931e);
+    background: #f4e6d8;
 }
 h1, h2, h3, h4, h5,h6{
     font-family: "Arial Black", Gadget, sans-serif;
 }
-ul{
+header ul{
   list-style: none;
   width: 100%;
 }
-li{
+
+header li{
   display: flex;
   margin: 1em;
   float: left;
   font-weight: bold;
 }
-li a{
+
+header li a{
   text-decoration: none;
   color: white;
 }
 
 article p, h1, h2, h3, h4, h5, h6{
-  color:white;
+  color:#3d3d3d;
 }
 
 article p{
@@ -44,23 +46,27 @@ article p{
   line-height: 1.4em;
   text-align: center;
 }
+
 h1, h2, h3, h4, h5, h6{
   text-align: center;
 }
 
-article{
+article
+{
   border-style: solid;
-  border-color: white;
+  border-color: #C5AFA4;
+  color: #444444;
   border-radius: 5px 5px 5px 5px;
   box-sizing: border-box;
-  background-color: rgba(255, 255, 255, 0.6);
+  background-color: #C5AFA4;
   margin-bottom: 1em;
 }
+
 main{
   padding-top:40px;
 }
 b{
-  color:#9e005d;
+  color:#C5AFA4;
 }
 fieldset{
   margin: 10px;
@@ -86,16 +92,61 @@ input, select, .submit
   height:1em;
   width:auto;
 }
-form{
-  background-color:#d4145a;
+
+.contact, .delete{
+  float: right;
+  margin-right: 5px;
+}
+
+.registreerformulier{
+  background-color:#C5AFA4;
   margin-top:-6px;
 }
 
-.eigenschappen{
-    list-style: none;
-    width: 100%;
-    margin-left: -30px;
+.resultaten
+{
+  border-style: solid;
+  border-color: white;
+  border-radius: 5px 5px 5px 5px;
+  box-sizing: border-box;
+  background-color: rgba(255, 255, 255, 0.6);
+  margin-bottom: 1em;
+  width: 100%
 }
+
+.flexcontainer {
+  display:flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.eigenschappen {
+  display:inline-block;
+  font-size: 14px;
+  float: left;
+}
+
+.eigenschappenmatch {
+  color: #d4145a;
+  float: left;
+  font-size: 14px;
+  margin-right: 10px;
+}
+
+.eigenschappen li{
+  display: flex;
+  margin: 2px;
+  font-weight: bold;
+  list-style-type: none;
+}
+
+select{
+  height: 3em;
+    background-color: white;
+    border-radius: 10px;
+}
+
 .submitreg{
   text-align: center;
   font-size: 1.5em;
@@ -103,6 +154,31 @@ form{
   width: 50%;
   margin-left:25%;
   margin-bottom:10px;
+  margin-top:10px;
   color:white;
-  background-color: #f7931e;
+  background-color: #CF4D6F;
+}
+
+.beschrijving{
+  display: inline-block;
+  width: 100%;
+}
+
+.contact {
+  color: #a1055b;
+}
+
+.informatiematch {
+  margin: 5px;
+}
+
+.deletebutton {
+  text-align: center;
+  font-size: 1em;
+  border:none;
+  width: 100%;
+  height:35px;
+  margin-bottom:10px;
+  color:white;
+  background-color: #a1055b;
 }
