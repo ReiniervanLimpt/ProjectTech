@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="styles.css">
+  <title>FoodLove</title>
+</head>
+
+<body>
+  <header>
+    <nav>
+      <ul>
+        <li><a href="/">foodlove
+          </a></li>
+        <li><a href="matches">matches
+          </a></li>
+        <li><a href="mijnaccount">account
+          </a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <h1> Mijn account </h1>
+    <% data.forEach(function (entity) { %>
+      <article class='resultaten'>
+        <h1><%= entity.naam %></h1>
+        <h2><%= entity.geboortedatum %></h2>
+        <ul class='eigenschappen'>
+          <li>Favoriete keuken:</li>
+          <li>Vega of Vegan:</li>
+          <li>Eet graag:</li>
+        </ul>
+        <ul class='eigenschappenmatch'>
+          <li>
+            <%= entity.keuker %>
+          </li>
+          <li>
+            <%= entity.voorkeur %>
+          </li>
+          <li>
+            <%= entity.locatie %>
+          </li>
+        </ul>
+        <p>
+          <%= entity.beschrijving %>
+        </p>
+      </article>
+      <% }); %>
+        <% if (user) { %>
+          <a href="verwijderen" data-method="delete" data-token="{{csrf_token()}}" data-confirm="Weet u het zeker?">verwijder account</a>
+          <% } %>
+
+  </main>
+
+  <footer>
+  </footer>
+
+</body>
+
+</html>
