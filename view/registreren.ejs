@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,13 +8,16 @@
   <link rel="stylesheet" href="styles.css">
   <title>FoodLove</title>
 </head>
+
 <body>
   <header>
     <nav>
       <ul>
-          <li><a href="/">foodlove
-          </a></li><li><a href="inloggen">inloggen
-          </a></li><li><a href="registreren">registreren
+        <li><a href="/">foodlove
+          </a></li>
+        <li><a href="inloggen">inloggen
+          </a></li>
+        <li><a href="registreren">registreren
           </a></li>
       </ul>
     </nav>
@@ -23,25 +27,25 @@
     <article>
       <p> Vul uw gegevens in, wij vragen u om uw favoriete keuken en wat andere gegevens in te vullen om een match te kunnen vinden!</p>
     </article>
-  <form method="post" action="/registreren">
-    <fieldset>
-      <label for="naam">Uw naam</label>
-      <input required name="naam" type="text">
-    </fieldset>
-    <fieldset>
-      <label for="geboortedatum">Geboortedatum</label>
-      <input required name="geboortedatum" type="date">
-    </fieldset>
-    <fieldset>
-      <legend>Geslacht</legend>
+    <form class="registreerformulier" method="post" action="/registreren">
+      <fieldset>
+        <label for="naam">Uw naam</label>
+        <input required name="naam" type="text">
+      </fieldset>
+      <fieldset>
+        <label for="geboortedatum">Geboortedatum</label>
+        <input required name="geboortedatum" type="date">
+      </fieldset>
+      <fieldset>
+        <legend>Geslacht</legend>
         <label>Vrouw</label>
         <input type="radio" name="geslacht" value="vrouw" required>
         <label>man</label>
         <input type="radio" name="geslacht" value="man" required>
-    </fieldset>
-    <fieldset>
-      <label for="keuken">Favoriete keuken</label>
-      <select name="keuken" required>
+      </fieldset>
+      <fieldset>
+        <label for="keuken">Favoriete keuken</label>
+        <select name="keuken" required>
         <option value="Chinees">Chinees</option>
         <option value="Surinaams">Surinaams</option>
         <option value="Thais">Thais</option>
@@ -49,6 +53,7 @@
         <option value="Frans">Frans</option>
         <option value="Hollands">Hollands</option>
         <option value="Amerikaans">Amerikaans</option>
+        <option value="Italiaans">Italiaans</option>
       </select>
         <label for="voorkeur">bent u vegatarisch of veganistisch?</label>
         <select name="voorkeur" required>
@@ -56,28 +61,31 @@
         <option value="vegatarisch">Vegatarisch</option>
         <option value="veganistisch">Veganistisch</option>
       </select>
-      <label for="locatie">waar eet je graag</label>
+        <label for="locatie">waar eet je graag</label>
         <select name="locatie" required>
         <option value="geen voorkeur">Geen voorkeur</option>
         <option value="restaurant">Een restaurant</option>
         <option value="thuis">Thuis</option>
         <option value="bij iemand anders">Bij iemand anders</option>
       </select>
-    </fieldset>
-    <fieldset>
-      <label for="email">Uw e-mail adres</label>
-      <input name="email" required type="email" placeholder="naam@domein.com">
-      <label for="wachtwoord">wachtwoord met tekens, hoofdletters en cijfers</label>
-      <input name="wachtwoord" required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}" type="password" placeholder="wachtwoord">
-      <label for="wachtwoordverif">wachtwoord verifïeren:</label>
-      <input name="wachtwoordverif" required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}" type="password" placeholder="wachtwoord">
-   </fieldset>
-   <input class="submitreg" type="submit" value="registreer">
-</form>
-</main>
+        <label for="beschrijving">Geef een korte beschrijving van jezelf</label>
+        <input required name="beschrijving" type="text">
+      </fieldset>
+      <fieldset>
+        <label for="email">Uw e-mail adres</label>
+        <input name="email" required type="email" placeholder="naam@domein.com">
+        <label for="wachtwoord">wachtwoord met tekens, hoofdletters en cijfers (meer dan 8 karakters)</label>
+        <input name="wachtwoord" required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}" type="password" placeholder="wachtwoord">
+        <label for="wachtwoordverif">wachtwoord verifïeren:</label>
+        <input name="wachtwoordverif" required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}" type="password" placeholder="wachtwoord">
+      </fieldset>
+      <input class="submitreg" type="submit" value="registreer">
+    </form>
+  </main>
 
-<footer>
-</footer>
+  <footer>
+  </footer>
 
 </body>
+
 </html>

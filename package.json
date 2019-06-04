@@ -12,15 +12,18 @@
   "license": "ISC",
   "dependencies": {
     "argon2": "^0.17.3",
-    "body-parser": "^1.18.2",
+    "body-parser": "^1.19.0",
     "dotenv": "^5.0.1",
-    "ejs": "^2.5.8",
-    "express": "^4.16.3",
-    "express-session": "^1.15.6",
-    "mysql": "^2.15.0",
-    "node-gyp": "^3.6.2",
+    "ejs": "^2.6.1",
+    "express": "^4.17.1",
+    "express-session": "^1.16.1",
+    "mongodb": "^3.2.6",
+    "mongodb-server": "^1.0.0",
+    "mysql": "^2.17.1",
+    "node-gyp": "^3.8.0",
+    "nodemon": "^1.19.1",
     "package": "^1.0.1",
     "python": "0.0.4",
-    "slug": "^0.9.1"
+    "slug": "^0.9.4"
   }
 }
