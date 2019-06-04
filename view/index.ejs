@@ -12,14 +12,25 @@
 <body>
   <header>
     <nav>
-      <ul>
-        <li><a href="/">foodlove
+      <% if (user) { %>
+        <ul>
+          <li><a href="/">foodlove
         </a></li>
-        <li><a href="inloggen">inloggen
+          <li><a href="matches">matches
         </a></li>
-        <li><a href="registreren">registreren
+          <li><a href="mijnaccount">account
         </a></li>
-      </ul>
+        </ul>
+        <% } else { %>
+          <ul>
+            <li><a href="/">foodlove
+          </a></li>
+            <li><a href="inloggen">inloggen
+          </a></li>
+            <li><a href="registreren">registreren
+          </a></li>
+          </ul>
+          <% } %>
     </nav>
   </header>
 
