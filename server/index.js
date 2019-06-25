@@ -27,7 +27,7 @@
  }, function(err, client) {
    if (err) throw err
    console.log('Connected...')
-   db = client.db(process.env.DB_NAME)
+   db = client.db(process.foodlove)
  })
 
  module.exports = express()
