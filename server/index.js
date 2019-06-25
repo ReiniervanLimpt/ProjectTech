@@ -1,5 +1,6 @@
  'use strict'
 
+ var PORT = process.env.DB_PORT;
  var express = require('express')
  var bodyParser = require('body-parser')
  var mongo = require('mongodb')
@@ -57,7 +58,7 @@
      secret: "ilikecats"
    }))
 
-   .listen(process.env.PORT || 8000)
+   .listen(8000)
 
  function registreer(req, res, next) {
    var gebruikersnaam = req.body.naam
