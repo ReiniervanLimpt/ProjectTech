@@ -57,7 +57,7 @@
      secret: process.env.SESSION_SECRET
    }))
 
-   .listen(80)
+   .listen(8000)
 
  function registreer(req, res, next) {
    var gebruikersnaam = req.body.naam
