@@ -1,6 +1,6 @@
  'use strict'
 
- var PORT = process.env.PORT;
+ var PORT = process.env.DB_PORT;
  var express = require('express')
  var bodyParser = require('body-parser')
  var mongo = require('mongodb')
