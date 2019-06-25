@@ -1,6 +1,6 @@
  'use strict'
 
- var PORT = process.env.DB_PORT;
+ var PORT = process.env.PORT;
  var express = require('express')
  var bodyParser = require('body-parser')
  var mongo = require('mongodb')
@@ -27,7 +27,6 @@
    useNewUrlParser: true
  }, function(err, client) {
    if (err) throw err
-   console.log('Connected...')
    db = client.db(process.foodlove)
  })
 
