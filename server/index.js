@@ -10,18 +10,18 @@
 
  require('dotenv').config()
 
- // var url = 'mongodb://' + process.env.DB_HOST + ':' + process.env.DB_PORT
+ /* var url = 'mongodb://' + process.env.DB_HOST + ':' + process.env.DB_PORT
 
- /* mongo.MongoClient.connect(url, {
-    useNewUrlParser: true
-  }, function(err, client) {
-    if (err) throw err
-    db = client.db(process.env.DB_NAME)
-    useNewUrlParser: true
-  }) */
+ mongo.MongoClient.connect(url, {
+   useNewUrlParser: true
+ }, function(err, client) {
+   if (err) throw err
+   db = client.db(process.env.DB_NAME)
+   useNewUrlParser: true
+ }) */
 
  var db = null
- const uri = "mongodb+srv://Reinier:" + process.env.DB_DEPLOY_PASSWORD + "@foodlove-i09d7.mongodb.net/test?retryWrites=true&w=majority"
+ const uri = "mongodb+srv://deployAdmin:L3kk3rdeploy@foodlove-i09d7.mongodb.net/test?retryWrites=true&w=majority"
  MongoClient.connect(uri, {
    useNewUrlParser: true
  }, function(err, client) {
@@ -47,6 +47,7 @@
    .post('/registreren', registreer)
    .post('/login', login)
    .post('/filter', filterResultaten)
+   .post('/updaten', updateAccount)
 
    .delete('/verwijderen', verwijderGebruiker)
 
@@ -124,7 +125,6 @@
      return
    }
 
-
    db.collection('gebruikers').findOne({
      email: email
    }, done)
@@ -192,6 +192,60 @@
    }
  }
 
+ function account(req, res) {
+   console.log(session.user)
+   if (!session.user) {
+     res.render('index.ejs')
+   } else {
+     var naam = session.user.naam
+     db.collection('gebruikers').find({
+       naam: naam
+     }).toArray(done)
+   }
+
+   function done(err, data) {
+     if (err) {
+       next(err)
+     } else {
+       res.render('account.ejs', {
+         data: data,
+         user: session.user
+       })
+     }
+   }
+ }
+
+ function updateAccount(req, res) {
+   var naam = session.user.naam
+   if (!session.user) {
+     res.render('index.ejs')
+   } else {
+     db.collection("gebruikers").updateOne({
+         "naam": naam
+       }, {
+         $set: {
+           "keuker": req.body.keuken,
+           "voorkeur": req.body.voorkeur,
+           "locatie": req.body.locatie
+         }
+       }),
+       db.collection('gebruikers').find({
+         naam: naam
+       }).toArray(done)
+   }
+
+   function done(err, data) {
+     if (err) {
+       next(err)
+     } else {
+       res.render('account.ejs', {
+         data: data,
+         user: session.user
+       })
+     }
+   }
+ }
+
  function filterResultaten(req, res) {
    var keuken = req.body.keuken
    if (keuken !== "Alle keukens") {
@@ -219,28 +273,6 @@
            data: data
          })
        }
-     }
-   }
- }
-
- function account(req, res) {
-   if (!session.user) {
-     res.render('index.ejs')
-   } else {
-     var naam = session.user.naam
-     db.collection('gebruikers').find({
-       naam: naam
-     }).toArray(done)
-   }
-
-   function done(err, data) {
-     if (err) {
-       next(err)
-     } else {
-       res.render('account.ejs', {
-         data: data,
-         user: session.user
-       })
      }
    }
  }

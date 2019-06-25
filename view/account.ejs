@@ -29,22 +29,36 @@
       <article class='resultaten'>
         <h1><%= entity.naam %></h1>
         <h2><%= entity.geboortedatum %></h2>
-        <ul class='eigenschappen'>
-          <li>Favoriete keuken:</li>
-          <li>Vega of Vegan:</li>
-          <li>Eet graag:</li>
-        </ul>
-        <ul class='eigenschappenmatch'>
-          <li>
-            <%= entity.keuker %>
-          </li>
-          <li>
-            <%= entity.voorkeur %>
-          </li>
-          <li>
-            <%= entity.locatie %>
-          </li>
-        </ul>
+        <form method="post" action="/updaten">
+          <label for="keuken">Favoriete keuken</label>
+          <select name="keuken" required>
+            <option value="" selected disabled hidden><%= entity.keuker %></option>
+              <option value="Chinees">Chinees</option>
+              <option value="Surinaams">Surinaams</option>
+              <option value="Thais">Thais</option>
+              <option value="Oosters">Oosters</option>
+              <option value="Frans">Frans</option>
+              <option value="Hollands">Hollands</option>
+              <option value="Amerikaans">Amerikaans</option>
+              <option value="Italiaans">Italiaans</option>
+            </select>
+          <label for="voorkeur">bent u vegatarisch of veganistisch?</label>
+          <select name="voorkeur" required>
+            <option value="" selected disabled hidden><%= entity.voorkeur %></option>
+            <option value="niet vega of vegan">Geen van beide</option>
+            <option value="vegatarisch">Vegatarisch</option>
+            <option value="veganistisch">Veganistisch</option>
+          </select>
+          <label for="locatie">waar eet je graag</label>
+          <select name="locatie" required>
+            <option value="" selected disabled hidden><%= entity.locatie %></option>
+            <option value="geen voorkeur">Geen voorkeur</option>
+            <option value="restaurant">Een restaurant</option>
+            <option value="thuis">Thuis</option>
+            <option value="bij iemand anders">Bij iemand anders</option>
+          </select>
+          <input class="submitreg" type="submit" value="Updaten">
+        </form>
         <p>
           <%= entity.beschrijving %>
         </p>
