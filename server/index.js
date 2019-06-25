@@ -54,7 +54,7 @@
    .use(session({
      resave: false,
      saveUninitialized: true,
-     secret: process.env.SESSION_SECRET
+     secret: "ilikecats"
    }))
 
    .listen(process.env.PORT || 8000)
