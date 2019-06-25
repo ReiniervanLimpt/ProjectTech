@@ -54,10 +54,10 @@
    .use(session({
      resave: false,
      saveUninitialized: true,
-     secret: process.env.SESSION_SECRET
+     secret: "ilikecats"
    }))
 
-   .listen(80)
+   .listen(process.env.PORT || 8000)
 
  function registreer(req, res, next) {
    var gebruikersnaam = req.body.naam
