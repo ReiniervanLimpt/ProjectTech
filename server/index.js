@@ -54,8 +54,10 @@
    .use(session({
      resave: false,
      saveUninitialized: true,
-     secret: undefined
+     secret: process.env.SESSION_SECRET
    }))
+
+   .listen(80)
 
  function registreer(req, res, next) {
    var gebruikersnaam = req.body.naam
