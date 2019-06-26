@@ -1,6 +1,7 @@
  'use strict'
 
- var PORT = process.env.PORT;
+ const port = process.env.PORT;
+
  var express = require('express')
  var bodyParser = require('body-parser')
  var mongo = require('mongodb')
@@ -22,11 +23,12 @@
  }) */
 
  var db = null
- const uri = "mongodb+srv://deployAdmin:L3kk3rdeploy@foodlove-i09d7.mongodb.net/test?retryWrites=true&w=majority"
+ const uri = "mongodb+srv://deployAdmin:L3kk3rdeploy@foodlove-i09d7.mongodb.net/foodlove?retryWrites=true&w=majority"
  MongoClient.connect(uri, {
    useNewUrlParser: true
  }, function(err, client) {
    if (err) throw err
+   console.log('Connected...')
    db = client.db(process.foodlove)
  })
 
