@@ -1,7 +1,5 @@
  'use strict'
 
- const port = process.env.PORT;
-
  // var login = require("../static/login.js");
  // var connection = require('../connector/connection.js')
  var express = require('express')
@@ -50,10 +48,9 @@
      secret: "ilikecats"
    }))
 
-   .listen(8000)
+   .listen(process.env.PORT || 8000)
 
  // ________________________________________________________________________
-
 
  function registreer(req, res, next) {
    var gebruikersnaam = req.body.naam
