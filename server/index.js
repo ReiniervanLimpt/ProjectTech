@@ -2,6 +2,8 @@
 
  const port = process.env.PORT;
 
+ // var login = require("../static/login.js");
+ // var connection = require('../connector/connection.js')
  var express = require('express')
  var bodyParser = require('body-parser')
  var mongo = require('mongodb')
@@ -12,24 +14,14 @@
 
  require('dotenv').config()
 
- /* var url = 'mongodb://' + process.env.DB_HOST + ':' + process.env.DB_PORT
-
- mongo.MongoClient.connect(url, {
-   useNewUrlParser: true
- }, function(err, client) {
-   if (err) throw err
-   db = client.db(process.env.DB_NAME)
-   useNewUrlParser: true
- }) */
-
- var db = null
+ var db
  const uri = "mongodb+srv://deployAdmin:L3kk3rdeploy@foodlove-i09d7.mongodb.net/foodlove?retryWrites=true&w=majority"
  MongoClient.connect(uri, {
    useNewUrlParser: true
  }, function(err, client) {
    if (err) throw err
-   console.log('Connected...')
    db = client.db(process.foodlove)
+   console.log("connected...")
  })
 
  module.exports = express()
@@ -50,8 +42,7 @@
    .post('/login', login)
    .post('/filter', filterResultaten)
    .post('/updaten', updateAccount)
-
-   .delete('/verwijderen', verwijderGebruiker)
+   .post('/deleten', deleteAccount)
 
    .use(session({
      resave: false,
@@ -60,6 +51,10 @@
    }))
 
    .listen(8000)
+
+
+ // ________________________________________________________________________
+
 
  function registreer(req, res, next) {
    var gebruikersnaam = req.body.naam
@@ -161,7 +156,10 @@
    }
  }
 
+ // ________________________________________________________________________
+
  function loginForm(req, res, next) {
+   console.log(db)
    res.render('login.ejs')
  }
 
@@ -174,6 +172,8 @@
      user: session.user
    })
  }
+
+ // ________________________________________________________________________
 
  function matches(req, res) {
    if (!session.user) {
@@ -194,8 +194,40 @@
    }
  }
 
+ function filterResultaten(req, res) {
+   var keuken = req.body.keuken
+   if (keuken !== "Alle keukens") {
+     db.collection('gebruikers').find({
+       keuker: keuken
+     }).toArray(done)
+
+     function done(err, data) {
+       if (err) {
+         next(err)
+       } else {
+         res.render('matches.ejs', {
+           data: data
+         })
+       }
+     }
+   } else {
+     db.collection('gebruikers').find().toArray(done)
+
+     function done(err, data) {
+       if (err) {
+         next(err)
+       } else {
+         res.render('matches.ejs', {
+           data: data
+         })
+       }
+     }
+   }
+ }
+
+ // ________________________________________________________________________
+
  function account(req, res) {
-   console.log(session.user)
    if (!session.user) {
      res.render('index.ejs')
    } else {
@@ -248,46 +280,27 @@
    }
  }
 
- function filterResultaten(req, res) {
-   var keuken = req.body.keuken
-   if (keuken !== "Alle keukens") {
-     db.collection('gebruikers').find({
-       keuker: keuken
-     }).toArray(done)
-
-     function done(err, data) {
-       if (err) {
-         next(err)
-       } else {
-         res.render('matches.ejs', {
-           data: data
-         })
-       }
-     }
+ function deleteAccount(req, res) {
+   var naam = session.user.naam
+   if (!session.user) {
+     res.render('index.ejs')
    } else {
-     db.collection('gebruikers').find().toArray(done)
-
-     function done(err, data) {
-       if (err) {
-         next(err)
-       } else {
-         res.render('matches.ejs', {
-           data: data
-         })
-       }
-     }
+     db.collection('gebruikers').deleteOne({
+       "naam": naam
+     })
+     session.user = null;
+     done()
    }
- }
 
- function verwijderGebruiker(req, res, next) {
-   req.session.destroy(function(err) {
+   function done(err, data) {
      if (err) {
        next(err)
      } else {
-       db.gebruikers.deleteOne({
-         naam: naam
+       console.log(session)
+       res.render('index.ejs', {
+         data: data,
+         user: session.user
        })
-       res.redirect('/')
      }
-   })
+   }
  }
