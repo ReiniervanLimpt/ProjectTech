@@ -15,7 +15,7 @@
  require('dotenv').config()
 
  var db
- const uri = "mongodb+srv://deployAdmin:L3kk3rdeploy@foodlove-i09d7.mongodb.net/foodlove?retryWrites=true&w=majority"
+ const uri = "mongodb://deployAdmin:L3kk3rdeploy@foodlove-shard-00-00-i09d7.mongodb.net:27017,foodlove-shard-00-01-i09d7.mongodb.net:27017,foodlove-shard-00-02-i09d7.mongodb.net:27017/test?ssl=true&replicaSet=foodlove-shard-0&authSource=admin&retryWrites=true&w=majority"
  MongoClient.connect(uri, {
    useNewUrlParser: true
  }, function(err, client) {
@@ -51,7 +51,6 @@
    }))
 
    .listen(8000)
-
 
  // ________________________________________________________________________
 
