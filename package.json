@@ -19,7 +19,7 @@
     "express-session": "^1.16.1",
     "mongodb": "^3.2.7",
     "mongodb-server": "^1.0.0",
-    "mongoose": "^5.6.1",
+    "mongoose": "^5.7.5",
     "node-gyp": "^3.8.0",
     "nodemon": "^1.19.1",
     "package": "^1.0.1",
